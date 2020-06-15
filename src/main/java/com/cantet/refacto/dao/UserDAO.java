@@ -13,11 +13,10 @@ import java.util.List;
 @Service
 public class UserDAO {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    public UserDAO(){
+    public UserDAO(MongoTemplate mongoTemplate){
+        this.mongoTemplate = mongoTemplate;
     }
 
     public UserModel addUser(UserModel user) {
@@ -36,11 +35,11 @@ public class UserDAO {
 
     public void updateUser(UserModel user) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("user_id").is(user.getUser_id()));
+        query.addCriteria(Criteria.where("user_id").is(user.getUserId()));
         Update update = new Update();
         update.set("name", user.getName());
         update.set("email", user.getEmail());
-        update.set("last_connection", user.getLast_connection());
+        update.set("last_connection", user.getLastConnection());
         mongoTemplate.findAndModify(query, update, UserModel.class);
     }
 }
