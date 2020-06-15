@@ -13,7 +13,7 @@
     <version>last</version>
     <name>server</name>
     <packaging>jar</packaging>
-    <description></description>
+    <description>Passer d'une archi en couche à de la clean archi</description>
 
     <properties>
         <java.version>11</java.version>

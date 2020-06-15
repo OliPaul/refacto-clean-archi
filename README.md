@@ -1,5 +1,3 @@
-# JEE-Server : Gestion de comptes
-
 ## Lancement
 
 Pour lancer le serveur avec Maven :
@@ -18,8 +16,8 @@ $ java -jar target/server-version.jar
 Pour lancer le serveur avec Docker :
 
 ```console
-$ docker build . --tag jee-server
-$ docker run -d -p 8080:8080 --name="jee-server" jee-server
+$ docker build . --tag server
+$ docker run -d -p 8080:8080 --name="server" server
 ```
 
 ## Configurer ses variables d'environnements sur IntelliJ

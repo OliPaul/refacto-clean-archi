@@ -1,7 +1,6 @@
 package com.cantet.refacto.dao;
 
 import com.cantet.refacto.model.UserModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -13,11 +12,10 @@ import java.util.List;
 @Service
 public class UserDAO {
 
-    @Autowired
-    private MongoTemplate mongoTemplate;
+    private final MongoTemplate mongoTemplate;
 
-    @Autowired
-    public UserDAO(){
+    public UserDAO(MongoTemplate mongoTemplate){
+        this.mongoTemplate = mongoTemplate;
     }
 
     public UserModel addUser(UserModel user) {
@@ -28,19 +26,19 @@ public class UserDAO {
         return mongoTemplate.findAll(UserModel.class);
     }
 
-    public UserModel getUserById(String user_id) {
+    public UserModel getUserById(String userId) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("user_id").is(user_id));
+        query.addCriteria(Criteria.where("user_id").is(userId));
         return mongoTemplate.findOne(query, UserModel.class);
     }
 
     public void updateUser(UserModel user) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("user_id").is(user.getUser_id()));
+        query.addCriteria(Criteria.where("user_id").is(user.getUserId()));
         Update update = new Update();
         update.set("name", user.getName());
         update.set("email", user.getEmail());
-        update.set("last_connection", user.getLast_connection());
+        update.set("last_connection", user.getLastConnection());
         mongoTemplate.findAndModify(query, update, UserModel.class);
     }
 }
