@@ -1,17 +1,15 @@
-package com.cantet.refacto.controller;
+package com.cantet.refacto.infrastructure.controller;
 
-import com.cantet.refacto.dao.UserDAO;
-import com.cantet.refacto.model.UserModel;
+import com.cantet.refacto.domain.model.InvalidFieldException;
+import com.cantet.refacto.use_cases.RegisterUser;
+import com.cantet.refacto.use_cases.UpdateUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -23,11 +21,14 @@ class UserControllerUTest {
     private UserController userController;
 
     @Mock
-    private UserDAO userDAO;
+    private RegisterUser registerUser;
+
+    @Mock
+    private UpdateUser updateUser;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController(userDAO);
+        userController = new UserController(updateUser, registerUser);
     }
 
     @Nested
@@ -36,7 +37,7 @@ class UserControllerUTest {
         @Test
         void return_ok_and_message() {
             // given
-            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+            final UserDto userModel = new UserDto("toto", "toto@test.com");
 
             // when
             final ResponseEntity<String> result = userController.addUser(userModel);
@@ -47,22 +48,17 @@ class UserControllerUTest {
         }
 
         @Test
-        void call_addUser() {
+        void call_addUser() throws InvalidFieldException {
             // given
-            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+            final String name = "toto";
+            final String email = "toto@test.com";
+            final UserDto userModel = new UserDto(name, email);
 
             // when
             userController.addUser(userModel);
 
             // then
-            ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
-            verify(userDAO).addUser(userModelArgumentCaptor.capture());
-            final UserModel expectedUser = userModelArgumentCaptor.getValue();
-            assertThat(expectedUser.getUserId()).isNull();
-            assertThat(expectedUser.getName()).isEqualTo("toto");
-            assertThat(expectedUser.getEmail()).isEqualTo("toto@test.com");
-            assertThat(expectedUser.getCreated()).isNotNull();
-            assertThat(expectedUser.getLastConnection()).isNotNull();
+            verify(registerUser).signIn(name, email);
         }
     }
 }
