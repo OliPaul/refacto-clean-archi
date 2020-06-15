@@ -19,6 +19,7 @@ import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.HttpStatus.CREATED;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerUTest {
@@ -63,7 +64,7 @@ class UserControllerUTest {
 
             // then
             assertThat(result.getBody()).isEqualTo("Test user created");
-            assertThat(result.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+            assertThat(result.getStatusCode()).isEqualTo(CREATED);
         }
 
         @Test

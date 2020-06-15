@@ -51,7 +51,9 @@ public class UserDAOTest {
     @Test
     public void getAllUsers_should_return_all_users() {
         // given
-        final List<UserModel> userModels = asList(new UserModel("", "Test", "test@test.fr", new Date(), new Date()), new UserModel("", "Test", "test@test.fr", new Date(), new Date()));
+        final UserModel user1 = new UserModel("", "Test1", "test1@test.fr", new Date(), new Date());
+        final UserModel user2 = new UserModel("", "Test2", "test2@test.fr", new Date(), new Date());
+        final List<UserModel> userModels = asList(user1, user2);
         when(mongoTemplate.findAll(UserModel.class)).thenReturn(userModels);
 
         // when
@@ -59,6 +61,7 @@ public class UserDAOTest {
 
         // then
         assertThat(users).hasSize(2);
+        assertThat(users).containsExactly(user1, user2);
     }
 
     @Test
