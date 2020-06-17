@@ -1,15 +1,15 @@
 package com.cantet.refacto.user.domain;
 
-import com.cantet.refacto.user.dao.UserModel;
+import com.cantet.refacto.user.domain.model.User;
 
 import java.util.List;
 
 public interface UserRepository {
-    UserModel addUser(UserModel user);
+    User addUser(User user);
 
-    List<UserModel> getAllUsers();
+    List<User> getAllUsers();
 
-    UserModel getUserById(String userId);
+    User getUserById(String userId);
 
-    void updateUser(UserModel user);
+    void updateUser(User user);
 }
