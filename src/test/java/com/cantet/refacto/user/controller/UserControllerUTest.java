@@ -1,7 +1,7 @@
-package com.cantet.refacto.controller;
+package com.cantet.refacto.user.controller;
 
-import com.cantet.refacto.domain.service.InvalidFieldException;
-import com.cantet.refacto.domain.service.UserService;
+import com.cantet.refacto.user.domain.service.InvalidFieldException;
+import com.cantet.refacto.user.domain.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

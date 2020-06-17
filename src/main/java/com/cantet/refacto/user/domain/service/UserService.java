@@ -1,8 +1,7 @@
-package com.cantet.refacto.domain.service;
+package com.cantet.refacto.user.domain.service;
 
-import com.cantet.refacto.dao.UserDAO;
-import com.cantet.refacto.dao.UserModel;
-import com.cantet.refacto.domain.model.User;
+import com.cantet.refacto.user.dao.UserDAO;
+import com.cantet.refacto.user.dao.UserModel;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.cantet.refacto.controller;
+package com.cantet.refacto.user.controller;
 
 import lombok.Getter;
 

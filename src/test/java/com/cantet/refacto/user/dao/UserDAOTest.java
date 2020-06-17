@@ -1,4 +1,4 @@
-package com.cantet.refacto.dao;
+package com.cantet.refacto.user.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
