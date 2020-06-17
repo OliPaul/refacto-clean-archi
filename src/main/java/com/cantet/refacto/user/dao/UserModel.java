@@ -1,4 +1,4 @@
-package com.cantet.refacto.dao;
+package com.cantet.refacto.user.dao;
 
 import lombok.Getter;
 import lombok.Setter;

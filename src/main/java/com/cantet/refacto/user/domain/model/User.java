@@ -1,4 +1,4 @@
-package com.cantet.refacto.domain.model;
+package com.cantet.refacto.user.domain.model;
 
 import java.util.Date;
 

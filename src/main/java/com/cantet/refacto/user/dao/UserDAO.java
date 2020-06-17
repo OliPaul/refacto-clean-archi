@@ -1,4 +1,4 @@
-package com.cantet.refacto.dao;
+package com.cantet.refacto.user.dao;
 
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
