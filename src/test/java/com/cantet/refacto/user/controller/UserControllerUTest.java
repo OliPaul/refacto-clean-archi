@@ -1,5 +1,6 @@
 package com.cantet.refacto.user.controller;
 
+import com.cantet.refacto.user.domain.model.User;
 import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import com.cantet.refacto.user.domain.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,11 +14,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @ExtendWith(MockitoExtension.class)
@@ -38,14 +40,18 @@ class UserControllerUTest {
         @Test
         void return_ok_and_existing_users() {
             // given
-            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
-            when(userDAO.getAllUsers()).thenReturn(singletonList(userModel));
+            final User user = new User(null, "toto", "toto@test.com", null, null);
+            final List<User> users = singletonList(user);
+            when(userService.getAllUsers()).thenReturn(users);
 
             // when
-            final ResponseEntity<List<UserModel>> result = userController.getAllUsers();
+            final ResponseEntity<List<UserDto>> result = userController.getAllUsers();
 
             // then
-            assertThat(result.getBody()).containsOnly(userModel);
+            final List<UserDto> expectedUserDtos = users.stream()
+                    .map(currentUser -> new UserDto(currentUser.getName(), currentUser.getEmail()))
+                    .collect(Collectors.toList());
+            assertThat(result.getBody()).usingRecursiveFieldByFieldElementComparator().isEqualTo(expectedUserDtos);
             assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
         }
     }
@@ -79,27 +85,37 @@ class UserControllerUTest {
             // then
             verify(userService).addUser(name, email);
         }
+
+        @Test
+        void return_badRequest_when_addUser_throw_InvalidFieldException() throws InvalidFieldException {
+            // given
+            final String name = "";
+            final String email = "";
+
+            final UserDto userDto = mock(UserDto.class);
+            when(userDto.getName()).thenReturn(name);
+            when(userDto.getEmail()).thenReturn(email);
+
+            doThrow(new InvalidFieldException()).when(userService).addUser(name, email);
+
+            // when
+            final ResponseEntity<String> responseEntity = userController.addUser(userDto);
+
+            // then
+            assertThat(responseEntity.getBody()).isEqualTo("Test user NOT created");
+            assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
+        }
     }
 
     @Nested
     class UpdateUserShould {
 
         public static final String USER_ID = "21323234";
-        public static final String ORIGINAL_NAME = "pouet";
-        public static final String ORIGINAL_EMAIL = "pouet@test.com";
-        public final Date CREATED = new Date(2019, 1, 1);
-        public final Date ORIGINAL_LAST_CONNECTION = new Date(2019, 1, 1);
-
-        @BeforeEach
-        void setUp() {
-            final UserModel originalSavedUser = new UserModel(USER_ID, ORIGINAL_NAME, ORIGINAL_EMAIL, CREATED, ORIGINAL_LAST_CONNECTION);
-            when(userDAO.getUserById(USER_ID)).thenReturn(originalSavedUser);
-        }
 
         @Test
         void return_ok_and_message() {
             // given
-            final UserModel userModel = new UserModel(USER_ID, "toto2", "toto2@test.com", null, null);
+            final UserDto userModel = new UserDto(USER_ID, "toto2", "toto2@test.com");
 
             // when
             final ResponseEntity<String> result = userController.updateUser(userModel);
@@ -110,23 +126,35 @@ class UserControllerUTest {
         }
 
         @Test
-        void call_userDaoUpdateUser() {
+        void call_updateUser() throws InvalidFieldException {
             // given
             final String newName = "toto";
             final String newEmail = "toto@test.com";
-            final UserModel newUserModel = new UserModel(USER_ID, newName, newEmail, CREATED, ORIGINAL_LAST_CONNECTION);
+            final UserDto newUserModel = new UserDto(USER_ID, newName, newEmail);
 
             // when
             userController.updateUser(newUserModel);
 
             // then
-            ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
-            verify(userDAO).updateUser(userModelArgumentCaptor.capture());
-            final UserModel expectedUser = userModelArgumentCaptor.getValue();
-            assertThat(expectedUser.getUserId()).isEqualTo(USER_ID);
-            assertThat(expectedUser.getName()).isEqualTo(newName);
-            assertThat(expectedUser.getEmail()).isEqualTo(newEmail);
-            assertThat(expectedUser.getCreated()).isEqualTo(CREATED);
+            verify(userService).updateUser(USER_ID, newName, newEmail);
+        }
+
+        @Test
+        void return_badRequest_when_addUser_throw_InvalidFieldException() throws InvalidFieldException {
+            // given
+            final String name = "";
+            final String email = "";
+
+            final UserDto userDto = new UserDto(USER_ID, name, email);
+
+            doThrow(new InvalidFieldException()).when(userService).updateUser(USER_ID, name, email);
+
+            // when
+            final ResponseEntity<String> responseEntity = userController.updateUser(userDto);
+
+            // then
+            assertThat(responseEntity.getBody()).isEqualTo("Test user NOT updated");
+            assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
         }
     }
 }

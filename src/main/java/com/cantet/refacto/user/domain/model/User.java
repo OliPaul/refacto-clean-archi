@@ -1,5 +1,7 @@
 package com.cantet.refacto.user.domain.model;
 
+import com.cantet.refacto.user.domain.service.InvalidFieldException;
+
 import java.util.Date;
 
 public class User {
@@ -36,5 +38,12 @@ public class User {
 
     public Date getLastConnection() {
         return lastConnection;
+    }
+
+    public Boolean canBeSaved() throws InvalidFieldException {
+        if (name.isEmpty() || email.isEmpty()) {
+            throw new InvalidFieldException();
+        }
+        return true;
     }
 }

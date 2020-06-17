@@ -10,9 +10,12 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.Date;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceUTest {
@@ -50,26 +53,72 @@ class UserServiceUTest {
             assertThat(expectedUser.getLastConnection()).isNotNull();
         }
 
-        @Nested
-        class ThrowInvalidFieldException {
+        @Test
+        void throw_InvalidFieldException_when_name_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.addUser("", "toto@test.com"));
 
-            @Test
-            void when_name_is_empty() {
-                // when
-                final Throwable throwable = catchThrowable(() -> userService.addUser("", "toto@test.com"));
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
+        }
 
-                // then
-                assertThat(throwable).isInstanceOf(InvalidFieldException.class);
-            }
+        @Test
+        void throw_InvalidFieldException_when_email_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.addUser("toto", ""));
 
-            @Test
-            void when_email_is_empty() {
-                // when
-                final Throwable throwable = catchThrowable(() -> userService.addUser("toto", ""));
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
+        }
+    }
 
-                // then
-                assertThat(throwable).isInstanceOf(InvalidFieldException.class);
-            }
+    @Nested
+    class UpdateUserShould {
+
+        public static final String USER_ID = "123123";
+
+        @BeforeEach
+        void setUp() {
+            User existingUser = new User(USER_ID, "old name", "old email", Date.valueOf("2020-11-01"), Date.valueOf("2020-11-01"));
+            when(userRepository.getUserById(USER_ID)).thenReturn(existingUser);
+        }
+
+        @Test
+        void call_userDaoUpdateUser() throws InvalidFieldException {
+            // given
+            final String name = "toto";
+            final String email = "toto@test.com";
+
+            // when
+            userService.updateUser(USER_ID, name, email);
+
+            // then
+            ArgumentCaptor<User> userModelArgumentCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).updateUser(userModelArgumentCaptor.capture());
+            final User expectedUser = userModelArgumentCaptor.getValue();
+            assertThat(expectedUser.getUserId()).isEqualTo(USER_ID);
+            assertThat(expectedUser.getName()).isEqualTo(name);
+            assertThat(expectedUser.getEmail()).isEqualTo(email);
+            assertThat(expectedUser.getCreated()).isNotNull();
+            assertThat(expectedUser.getLastConnection()).isNotNull();
+        }
+
+        @Test
+        void throw_InvalidFieldException_when_name_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.updateUser(USER_ID, "", "toto@test.com"));
+
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
+        }
+
+        @Test
+        void throw_InvalidFieldException_when_email_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.updateUser(USER_ID, "toto", ""));
+
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
         }
     }
 }
