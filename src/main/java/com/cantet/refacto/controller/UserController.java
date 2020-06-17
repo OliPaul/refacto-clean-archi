@@ -1,5 +1,6 @@
 package com.cantet.refacto.controller;
 
+import com.cantet.refacto.service.InvalidFieldException;
 import com.cantet.refacto.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,11 @@ public class UserController {
 
     @PostMapping("/user/add")
     public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
-        userService.addUser(userDto.getName(), userDto.getEmail());
+        try {
+            userService.addUser(userDto.getName(), userDto.getEmail());
+        } catch (InvalidFieldException e) {
+            e.printStackTrace();
+        }
         return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
     }
 }

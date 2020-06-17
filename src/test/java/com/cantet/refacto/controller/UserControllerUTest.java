@@ -1,5 +1,6 @@
 package com.cantet.refacto.controller;
 
+import com.cantet.refacto.service.InvalidFieldException;
 import com.cantet.refacto.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -43,7 +44,7 @@ class UserControllerUTest {
         }
 
         @Test
-        void call_addUser() {
+        void call_addUser() throws InvalidFieldException {
             // given
             final String name = "toto";
             final String email = "toto@test.com";
