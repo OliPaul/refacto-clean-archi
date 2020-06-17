@@ -11,7 +11,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.CREATED;
 
 @ExtendWith(MockitoExtension.class)
@@ -55,6 +56,26 @@ class UserControllerUTest {
 
             // then
             verify(userService).addUser(name, email);
+        }
+
+        @Test
+        void return_badRequest_when_addUser_throw_InvalidFieldException() throws InvalidFieldException {
+            // given
+            final String name = "";
+            final String email = "";
+
+            final UserDto userDto = mock(UserDto.class);
+            when(userDto.getName()).thenReturn(name);
+            when(userDto.getEmail()).thenReturn(email);
+
+            doThrow(new InvalidFieldException()).when(userService).addUser(name, email);
+
+            // when
+            final ResponseEntity<String> responseEntity = userController.addUser(userDto);
+
+            // then
+            assertThat(responseEntity.getBody()).isEqualTo("Test user NOT created");
+            assertThat(responseEntity.getStatusCode()).isEqualTo(BAD_REQUEST);
         }
     }
 }

@@ -15,10 +15,8 @@ public class UserService {
     }
 
     public void addUser(String name, String email) throws InvalidFieldException {
-        if (name.isEmpty() || email.isEmpty()) {
-            throw new InvalidFieldException();
-        }
         User user = new User(null, name, email, new Date(), new Date());
+        user.canBeSaved();
 
         userRepository.addUser(user);
     }

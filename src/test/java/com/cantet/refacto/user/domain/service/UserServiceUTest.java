@@ -10,6 +10,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Date;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.mockito.Mockito.verify;
@@ -50,26 +52,22 @@ class UserServiceUTest {
             assertThat(expectedUser.getLastConnection()).isNotNull();
         }
 
-        @Nested
-        class ThrowInvalidFieldException {
+        @Test
+        void throw_InvalidFieldException_when_name_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.addUser("", "toto@test.com"));
 
-            @Test
-            void when_name_is_empty() {
-                // when
-                final Throwable throwable = catchThrowable(() -> userService.addUser("", "toto@test.com"));
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
+        }
 
-                // then
-                assertThat(throwable).isInstanceOf(InvalidFieldException.class);
-            }
+        @Test
+        void throw_InvalidFieldException_when_email_is_empty() {
+            // when
+            final Throwable throwable = catchThrowable(() -> userService.addUser("toto", ""));
 
-            @Test
-            void when_email_is_empty() {
-                // when
-                final Throwable throwable = catchThrowable(() -> userService.addUser("toto", ""));
-
-                // then
-                assertThat(throwable).isInstanceOf(InvalidFieldException.class);
-            }
+            // then
+            assertThat(throwable).isInstanceOf(InvalidFieldException.class);
         }
     }
 }

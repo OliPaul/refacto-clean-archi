@@ -21,9 +21,9 @@ public class UserController {
     public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
         try {
             userService.addUser(userDto.getName(), userDto.getEmail());
+            return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
         } catch (InvalidFieldException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>("Test user NOT created", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
     }
 }
