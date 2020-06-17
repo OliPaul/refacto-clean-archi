@@ -1,7 +1,7 @@
 package com.cantet.refacto.user.domain.service;
 
-import com.cantet.refacto.user.dao.UserDAO;
 import com.cantet.refacto.user.dao.UserModel;
+import com.cantet.refacto.user.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,11 +20,11 @@ class UserServiceUTest {
     private UserService userService;
 
     @Mock
-    private UserDAO userDAO;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userDAO);
+        userService = new UserService(userRepository);
     }
 
     @Nested
@@ -41,7 +41,7 @@ class UserServiceUTest {
 
             // then
             ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
-            verify(userDAO).addUser(userModelArgumentCaptor.capture());
+            verify(userRepository).addUser(userModelArgumentCaptor.capture());
             final UserModel expectedUser = userModelArgumentCaptor.getValue();
             assertThat(expectedUser.getUserId()).isNull();
             assertThat(expectedUser.getName()).isEqualTo(name);
