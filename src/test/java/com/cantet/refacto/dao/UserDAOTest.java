@@ -1,6 +1,5 @@
 package com.cantet.refacto.dao;
 
-import com.cantet.refacto.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
