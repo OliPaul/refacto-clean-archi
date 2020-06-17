@@ -1,7 +1,7 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.dao.UserDAO;
 import com.cantet.refacto.model.UserModel;
+import com.cantet.refacto.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,17 +13,15 @@ import java.util.Date;
 @RestController
 public class UserController {
 
-    private final UserDAO userDAO;
+    private final UserService userService;
 
-    public UserController(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/user/add")
     public ResponseEntity<String> addUser(@RequestBody UserModel userModel) {
-        UserModel user = new UserModel(null, userModel.getName(), userModel.getEmail(), new Date(), new Date());
-
-        userDAO.addUser(user);
+        userService.addUser(userModel);
         return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
     }
 }

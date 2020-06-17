@@ -1,7 +1,7 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.dao.UserDAO;
 import com.cantet.refacto.model.UserModel;
+import com.cantet.refacto.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -10,8 +10,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
@@ -23,11 +21,11 @@ class UserControllerUTest {
     private UserController userController;
 
     @Mock
-    private UserDAO userDAO;
+    private UserService userService;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController(userDAO);
+        userController = new UserController(userService);
     }
 
     @Nested
@@ -56,13 +54,13 @@ class UserControllerUTest {
 
             // then
             ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
-            verify(userDAO).addUser(userModelArgumentCaptor.capture());
+            verify(userService).addUser(userModelArgumentCaptor.capture());
             final UserModel expectedUser = userModelArgumentCaptor.getValue();
             assertThat(expectedUser.getUserId()).isNull();
             assertThat(expectedUser.getName()).isEqualTo("toto");
             assertThat(expectedUser.getEmail()).isEqualTo("toto@test.com");
-            assertThat(expectedUser.getCreated()).isNotNull();
-            assertThat(expectedUser.getLastConnection()).isNotNull();
+            assertThat(expectedUser.getCreated()).isNull();
+            assertThat(expectedUser.getLastConnection()).isNull();
         }
     }
 }
