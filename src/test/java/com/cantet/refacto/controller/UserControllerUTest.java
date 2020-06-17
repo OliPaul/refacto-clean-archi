@@ -1,12 +1,10 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.model.UserModel;
 import com.cantet.refacto.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
@@ -57,10 +55,10 @@ class UserControllerUTest {
         @Test
         void return_ok_and_message() {
             // given
-            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+            final UserDto userDto = new UserDto("toto", "toto@test.com");
 
             // when
-            final ResponseEntity<String> result = userController.addUser(userModel);
+            final ResponseEntity<String> result = userController.addUser(userDto);
 
             // then
             assertThat(result.getBody()).isEqualTo("Test user created");
@@ -70,20 +68,15 @@ class UserControllerUTest {
         @Test
         void call_addUser() {
             // given
-            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+            final String name = "toto";
+            final String email = "toto@test.com";
+            final UserDto userDto = new UserDto(name, email);
 
             // when
-            userController.addUser(userModel);
+            userController.addUser(userDto);
 
             // then
-            ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
-            verify(userService).addUser(userModelArgumentCaptor.capture());
-            final UserModel expectedUser = userModelArgumentCaptor.getValue();
-            assertThat(expectedUser.getUserId()).isNull();
-            assertThat(expectedUser.getName()).isEqualTo("toto");
-            assertThat(expectedUser.getEmail()).isEqualTo("toto@test.com");
-            assertThat(expectedUser.getCreated()).isNull();
-            assertThat(expectedUser.getLastConnection()).isNull();
+            verify(userService).addUser(name, email);
         }
     }
 

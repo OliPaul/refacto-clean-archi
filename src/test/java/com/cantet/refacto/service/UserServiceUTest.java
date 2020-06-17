@@ -28,18 +28,20 @@ class UserServiceUTest {
     @Test
     void addUser_should_call_userDaoAddUser() {
         // given
-        UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+        final String name = "toto";
+        final String email = "toto@test.com";
+        UserModel userModel = new UserModel(null, name, email, null, null);
 
         // when
-        userService.addUser(userModel);
+        userService.addUser(name, email);
 
         // then
         ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
         verify(userDAO).addUser(userModelArgumentCaptor.capture());
         final UserModel expectedUser = userModelArgumentCaptor.getValue();
         assertThat(expectedUser.getUserId()).isNull();
-        assertThat(expectedUser.getName()).isEqualTo("toto");
-        assertThat(expectedUser.getEmail()).isEqualTo("toto@test.com");
+        assertThat(expectedUser.getName()).isEqualTo(name);
+        assertThat(expectedUser.getEmail()).isEqualTo(email);
         assertThat(expectedUser.getCreated()).isNotNull();
         assertThat(expectedUser.getLastConnection()).isNotNull();
     }

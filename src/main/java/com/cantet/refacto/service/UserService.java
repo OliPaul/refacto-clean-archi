@@ -14,9 +14,10 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public void addUser(UserModel userModel) {
-        UserModel user = new UserModel(null, userModel.getName(), userModel.getEmail(), new Date(), new Date());
+    public void addUser(String name, String email) {
+        UserModel user = new UserModel(null, name, email, new Date(), new Date());
 
         userDAO.addUser(user);
+
     }
 }

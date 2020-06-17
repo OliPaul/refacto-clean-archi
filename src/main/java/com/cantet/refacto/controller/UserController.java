@@ -1,6 +1,5 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.model.UserModel;
 import com.cantet.refacto.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import java.util.Date;
 import java.util.List;
 
+=======
+>>>>>>> create userDto and use it in controller, and change addUser signature in service
 @RestController
 public class UserController {
 
@@ -28,8 +30,8 @@ public class UserController {
     }
 
     @PostMapping("/user/add")
-    public ResponseEntity<String> addUser(@RequestBody UserModel userModel) {
-        userService.addUser(userModel);
+    public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
+        userService.addUser(userDto.getName(), userDto.getEmail());
         return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
     }
 
