@@ -1,6 +1,5 @@
 package com.cantet.refacto.dao;
 
-import com.cantet.refacto.model.UserModel;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

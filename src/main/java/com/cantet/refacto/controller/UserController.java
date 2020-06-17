@@ -1,7 +1,7 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.service.InvalidFieldException;
-import com.cantet.refacto.service.UserService;
+import com.cantet.refacto.domain.service.InvalidFieldException;
+import com.cantet.refacto.domain.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
