@@ -14,10 +14,12 @@ public class UserService {
         this.userDAO = userDAO;
     }
 
-    public void addUser(String name, String email) {
+    public void addUser(String name, String email) throws InvalidFieldException {
+        if (name.isEmpty() || email.isEmpty()) {
+            throw new InvalidFieldException();
+        }
         UserModel user = new UserModel(null, name, email, new Date(), new Date());
 
         userDAO.addUser(user);
-
     }
 }
