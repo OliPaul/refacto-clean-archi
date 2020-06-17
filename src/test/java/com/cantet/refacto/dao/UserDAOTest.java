@@ -2,10 +2,9 @@ package com.cantet.refacto.dao;
 
 import com.cantet.refacto.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -34,18 +33,35 @@ public class UserDAOTest {
         userDAO = new UserDAO(mongoTemplate);
     }
 
-    @Test
-    public void addUser_should_return_added_user() {
-        // given
-        UserModel expectedUser = new UserModel("23424524523412", "Test", "test@test.fr", new Date(), new Date());
+    @Nested
+    class AddUserShould {
 
-        when(mongoTemplate.save(expectedUser)).thenReturn(expectedUser);
+        @Test
+        public void return_added_user() {
+            // given
+            UserModel expectedUser = new UserModel("23424524523412", "Test", "test@test.fr", new Date(), new Date());
 
-        // when
-        final UserModel userModel = userDAO.addUser(expectedUser);
+            when(mongoTemplate.save(expectedUser)).thenReturn(expectedUser);
 
-        // then
-        assertThat(userModel).isEqualTo(expectedUser);
+            // when
+            final UserModel userModel = userDAO.addUser(expectedUser);
+
+            // then
+            assertThat(userModel).isEqualTo(expectedUser);
+        }
+
+        @Test
+        public void call_mongoSave() {
+            // given
+            UserModel expectedUser = new UserModel("23424524523412", "Test", "test@test.fr", new Date(), new Date());
+            when(mongoTemplate.save(expectedUser)).thenReturn(expectedUser);
+
+            // when
+            final UserModel userModel = userDAO.addUser(expectedUser);
+
+            // then
+            verify(mongoTemplate).save(userModel);
+        }
     }
 
     @Test
