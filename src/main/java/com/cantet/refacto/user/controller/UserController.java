@@ -26,4 +26,15 @@ public class UserController {
             return new ResponseEntity<>("Test user NOT created", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public ResponseEntity<String> updateUser(String userId, UserDto userDto) {
+        try {
+            userService.updateUser(userId, userDto.getName(), userDto.getEmail());
+            return new ResponseEntity<>("Test user updated", HttpStatus.OK);
+        } catch (InvalidFieldException e) {
+            return new ResponseEntity<>("Test user NOT updated", HttpStatus.BAD_REQUEST);
+
+        }
+
+    }
 }
