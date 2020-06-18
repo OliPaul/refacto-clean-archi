@@ -2,7 +2,7 @@ package com.cantet.refacto.user.infrastructure.dao;
 
 import com.cantet.refacto.user.domain.UserRepository;
 import com.cantet.refacto.user.domain.model.User;
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
+import com.cantet.refacto.user.domain.model.InvalidFieldException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

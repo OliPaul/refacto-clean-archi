@@ -1,7 +1,5 @@
 package com.cantet.refacto.user.domain.model;
 
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
-
 import java.util.Date;
 
 public class User {
