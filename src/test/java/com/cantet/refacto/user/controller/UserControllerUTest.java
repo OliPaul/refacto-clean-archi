@@ -19,8 +19,7 @@ import java.util.stream.Collectors;
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserControllerUTest {
@@ -60,7 +59,7 @@ class UserControllerUTest {
     class AddUserShould {
 
         @Test
-        void return_ok_and_message() {
+        void return_create_and_message() {
             // given
             final UserDto userDto = new UserDto("toto", "toto@test.com");
 
