@@ -1,4 +1,4 @@
-package com.cantet.refacto.user.dao;
+package com.cantet.refacto.user.infrastructure.dao;
 
 
 import com.cantet.refacto.user.domain.model.User;

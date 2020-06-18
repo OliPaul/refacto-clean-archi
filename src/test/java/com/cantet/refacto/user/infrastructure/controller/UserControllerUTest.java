@@ -1,4 +1,4 @@
-package com.cantet.refacto.user.controller;
+package com.cantet.refacto.user.infrastructure.controller;
 
 import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import com.cantet.refacto.user.domain.service.UserService;
