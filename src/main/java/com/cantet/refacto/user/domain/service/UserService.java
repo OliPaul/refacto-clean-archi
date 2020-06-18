@@ -29,7 +29,6 @@ public class UserService {
         final User existingUser = userRepository.getUserById(userId);
 
         final User updatedUser = new User(userId, name, email, existingUser.getCreated(), new Date());
-        updatedUser.canBeSaved();
 
         userRepository.updateUser(updatedUser);
     }

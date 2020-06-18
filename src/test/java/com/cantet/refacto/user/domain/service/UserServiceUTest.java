@@ -14,7 +14,7 @@ import java.sql.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -78,7 +78,7 @@ class UserServiceUTest {
         public static final String USER_ID = "123123";
 
         @BeforeEach
-        void setUp() {
+        void setUp() throws InvalidFieldException {
             User existingUser = new User(USER_ID, "old name", "old email", Date.valueOf("2020-11-01"), Date.valueOf("2020-11-01"));
             when(userRepository.getUserById(USER_ID)).thenReturn(existingUser);
         }
