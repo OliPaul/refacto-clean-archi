@@ -14,7 +14,7 @@ import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceUTest {
@@ -68,6 +68,39 @@ class UserServiceUTest {
 
             // then
             assertThat(throwable).isInstanceOf(InvalidFieldException.class);
+        }
+    }
+
+    @Nested
+    class UpdateUserShould {
+
+        @Test
+        void call_userDaoUpdateUser() throws InvalidFieldException {
+            // given
+            final String userId = "21323234";
+            final String originalName = "pouet";
+            final String originalEmail = "pouet@test.com";
+            final Date created = new Date(2019, 1, 1);
+            final Date originalLastConnection = new Date(2019, 1, 1);
+
+            final User originalSavedUser = new User(userId, originalName, originalEmail, created, originalLastConnection);
+            when(userRepository.getUserById(userId)).thenReturn(originalSavedUser);
+
+            final String newName = "toto";
+            final String newEmail = "toto@test.com";
+
+            // when
+            userService.updateUser(userId, newName, newEmail);
+
+            // then
+            ArgumentCaptor<User> userModelArgumentCaptor = ArgumentCaptor.forClass(User.class);
+            verify(userRepository).updateUser(userModelArgumentCaptor.capture());
+            final User expectedUser = userModelArgumentCaptor.getValue();
+            assertThat(expectedUser.getUserId()).isEqualTo(userId);
+            assertThat(expectedUser.getName()).isEqualTo(newName);
+            assertThat(expectedUser.getEmail()).isEqualTo(newEmail);
+            assertThat(expectedUser.getCreated()).isEqualTo(created);
+            assertThat(expectedUser.getLastConnection().before(originalLastConnection)).isTrue();
         }
     }
 }

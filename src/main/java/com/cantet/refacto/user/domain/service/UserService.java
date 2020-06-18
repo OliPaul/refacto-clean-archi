@@ -19,4 +19,12 @@ public class UserService {
 
         userRepository.addUser(user);
     }
+
+    public void updateUser(String userId, String name, String email) throws InvalidFieldException {
+        final User originalSavedUser = userRepository.getUserById(userId);
+
+        final User user = new User(userId, name, email, originalSavedUser.getCreated(), new Date());
+
+        userRepository.updateUser(user);
+    }
 }
