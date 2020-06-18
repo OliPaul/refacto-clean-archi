@@ -19,10 +19,10 @@ public class UserService {
         return null;
     }
 
-    public void addUser(String name, String email) throws InvalidFieldException {
+    public User addUser(String name, String email) throws InvalidFieldException {
         User user = new User(null, name, email, new Date(), new Date());
 
-        userRepository.addUser(user);
+        return userRepository.addUser(user);
     }
 
     public void updateUser(String userId, String name, String email) throws InvalidFieldException {
