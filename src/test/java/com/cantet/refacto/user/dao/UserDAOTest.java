@@ -1,6 +1,7 @@
 package com.cantet.refacto.user.dao;
 
 import com.cantet.refacto.user.domain.model.User;
+import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -19,7 +20,6 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +43,7 @@ public class UserDAOTest {
         private UserModel userModel;
 
         @BeforeEach
-        void setUp() {
+        void setUp() throws InvalidFieldException {
             final String userId = "23424524523412";
             final String name = "Test";
             final String email = "test@test.fr";
@@ -58,7 +58,7 @@ public class UserDAOTest {
         }
 
         @Test
-        public void return_added_user() {
+        public void return_added_user() throws InvalidFieldException {
             // when
             final User result = userDAO.addUser(user);
 
@@ -67,7 +67,7 @@ public class UserDAOTest {
         }
 
         @Test
-        public void call_mongoSave() {
+        public void call_mongoSave() throws InvalidFieldException {
             // when
             userDAO.addUser(user);
 
@@ -79,7 +79,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void getAllUsers_should_return_all_users() {
+    public void getAllUsers_should_return_all_users() throws InvalidFieldException {
         // given
         final Date created = new Date();
         final Date lastConnection = new Date();
@@ -100,7 +100,7 @@ public class UserDAOTest {
     }
 
     @Test
-    public void getUserById_should_return_matching_user() {
+    public void getUserById_should_return_matching_user() throws InvalidFieldException {
         // given
         final String userId = "34234234234";
 
@@ -119,7 +119,7 @@ public class UserDAOTest {
     }
 
     @Test
-    void update_should_call_findAndModify() {
+    void update_should_call_findAndModify() throws InvalidFieldException {
         // given
         final String userId = "34234234234";
         final String name = "Test";
