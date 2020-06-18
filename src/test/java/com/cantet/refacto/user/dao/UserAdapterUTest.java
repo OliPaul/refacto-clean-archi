@@ -2,6 +2,7 @@ package com.cantet.refacto.user.dao;
 
 
 import com.cantet.refacto.user.domain.model.User;
+import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -10,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UserAdapterUTest {
     @Test
-    void userToModel_should_convert_User_into_UserModel() {
+    void userToModel_should_convert_User_into_UserModel() throws InvalidFieldException {
         // given
         final Date created = new Date();
         final Date lastConnection = new Date();
@@ -25,7 +26,7 @@ class UserAdapterUTest {
     }
 
     @Test
-    void modelToUser_should_convert_UserModel_into_User() {
+    void modelToUser_should_convert_UserModel_into_User() throws InvalidFieldException {
         // given
         final Date created = new Date();
         final Date lastConnection = new Date();

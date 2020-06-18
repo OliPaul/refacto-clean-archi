@@ -2,12 +2,14 @@ package com.cantet.refacto.user.dao;
 
 import com.cantet.refacto.user.domain.UserRepository;
 import com.cantet.refacto.user.domain.model.User;
+import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
@@ -22,22 +24,27 @@ public class UserDAO implements UserRepository {
     }
 
     @Override
-    public User addUser(User user) {
+    public User addUser(User user) throws InvalidFieldException {
         final UserModel userModel = UserAdapter.userToModel(user);
         final UserModel savedUser = mongoTemplate.save(userModel);
         return UserAdapter.modelToUser(savedUser);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        final List<UserModel> users = mongoTemplate.findAll(UserModel.class);
-        return users.stream()
-                .map(UserAdapter::modelToUser)
-                .collect(toList());
+    public List<User> getAllUsers() throws InvalidFieldException {
+        final List<UserModel> userModels = mongoTemplate.findAll(UserModel.class);
+        final List<User> users = new ArrayList<>();
+        for (UserModel userModel: userModels
+             ) {
+            final User user = UserAdapter.modelToUser(userModel);
+            users.add(user);
+        }
+
+        return users;
     }
 
     @Override
-    public User getUserById(String userId) {
+    public User getUserById(String userId) throws InvalidFieldException {
         Query query = new Query();
         query.addCriteria(Criteria.where("user_id").is(userId));
         final UserModel userModel = mongoTemplate.findOne(query, UserModel.class);
