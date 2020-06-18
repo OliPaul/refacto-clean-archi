@@ -12,8 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +30,28 @@ class UserServiceUTest {
 
     @Nested
     class AddUserShould {
+
+        @Test
+        void return_created_user() throws InvalidFieldException {
+            // given
+            final String name = "toto";
+            final String email = "toto@test.com";
+            final String userId = "132234";
+
+            final User expectedUser = new User(userId, name, email, new Date(), new Date());
+            when(userRepository.addUser(any(User.class))).thenReturn(expectedUser);
+
+            // when
+            User createdUser = userService.addUser(name, email);
+
+            // then
+            assertThat(createdUser).isEqualToComparingFieldByField(expectedUser);
+            assertThat(createdUser.getUserId()).isEqualTo(userId);
+            assertThat(createdUser.getName()).isEqualTo(name);
+            assertThat(createdUser.getEmail()).isEqualTo(email);
+            assertThat(createdUser.getCreated()).isNotNull();
+            assertThat(createdUser.getLastConnection()).isNotNull();
+        }
 
         @Test
         void call_userDaoAddUser() throws InvalidFieldException {
