@@ -1,8 +1,10 @@
 package com.cantet.refacto.user.infrastructure.controller;
 
 import com.cantet.refacto.user.domain.model.User;
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
-import com.cantet.refacto.user.domain.service.UserService;
+import com.cantet.refacto.user.domain.model.InvalidFieldException;
+import com.cantet.refacto.user.use_case.CreateUser;
+import com.cantet.refacto.user.use_case.GetAllUsers;
+import com.cantet.refacto.user.use_case.UpdateUser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,21 +28,27 @@ class UserControllerUTest {
     private UserController userController;
 
     @Mock
-    private UserService userService;
+    private GetAllUsers getAllUsers;
+
+    @Mock
+    private CreateUser createUser;
+
+    @Mock
+    private UpdateUser updateUser;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController(userService);
+        userController = new UserController(getAllUsers, createUser, updateUser);
     }
 
     @Nested
     class GetUsesShould {
         @Test
-        void return_ok_and_existing_users() {
+        void return_ok_and_existing_users() throws InvalidFieldException {
             // given
             final User user = new User(null, "toto", "toto@test.com", null, null);
             final List<User> users = singletonList(user);
-            when(userService.getAllUsers()).thenReturn(users);
+            when(getAllUsers.execute()).thenReturn(users);
 
             // when
             final ResponseEntity<List<UserDto>> result = userController.getAllUsers();
@@ -82,7 +89,7 @@ class UserControllerUTest {
             userController.addUser(userDto);
 
             // then
-            verify(userService).addUser(name, email);
+            verify(createUser).execute(name, email);
         }
 
         @Test
@@ -95,7 +102,7 @@ class UserControllerUTest {
             when(userDto.getName()).thenReturn(name);
             when(userDto.getEmail()).thenReturn(email);
 
-            doThrow(new InvalidFieldException()).when(userService).addUser(name, email);
+            doThrow(new InvalidFieldException()).when(createUser).execute(name, email);
 
             // when
             final ResponseEntity<String> responseEntity = userController.addUser(userDto);
@@ -135,7 +142,7 @@ class UserControllerUTest {
             userController.updateUser(newUserModel);
 
             // then
-            verify(userService).updateUser(USER_ID, newName, newEmail);
+            verify(updateUser).execute(USER_ID, newName, newEmail);
         }
 
         @Test
@@ -146,7 +153,7 @@ class UserControllerUTest {
 
             final UserDto userDto = new UserDto(USER_ID, name, email);
 
-            doThrow(new InvalidFieldException()).when(userService).updateUser(USER_ID, name, email);
+            doThrow(new InvalidFieldException()).when(updateUser).execute(USER_ID, name, email);
 
             // when
             final ResponseEntity<String> responseEntity = userController.updateUser(userDto);

@@ -1,8 +1,10 @@
 package com.cantet.refacto.user.infrastructure.controller;
 
 import com.cantet.refacto.user.domain.model.User;
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
-import com.cantet.refacto.user.domain.service.UserService;
+import com.cantet.refacto.user.domain.model.InvalidFieldException;
+import com.cantet.refacto.user.use_case.CreateUser;
+import com.cantet.refacto.user.use_case.GetAllUsers;
+import com.cantet.refacto.user.use_case.UpdateUser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,15 +18,19 @@ import java.util.stream.Collectors;
 @RestController
 public class UserController {
 
-    private final UserService userService;
+    private final GetAllUsers getAllUsers;
+    private final CreateUser createUser;
+    private final UpdateUser updateUser;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(GetAllUsers getAllUsers, CreateUser createUser, UpdateUser updateUser) {
+        this.getAllUsers = getAllUsers;
+        this.createUser = createUser;
+        this.updateUser = updateUser;
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<UserDto>> getAllUsers() {
-        final List<User> allUsers = userService.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers() throws InvalidFieldException {
+        final List<User> allUsers = getAllUsers.execute();
         final List<UserDto> userDtos = allUsers.stream()
                 .map(currentUser -> new UserDto(currentUser.getName(), currentUser.getEmail()))
                 .collect(Collectors.toList());
@@ -34,7 +40,7 @@ public class UserController {
     @PostMapping("/user/add")
     public ResponseEntity<String> addUser(@RequestBody UserDto userDto) {
         try {
-            userService.addUser(userDto.getName(), userDto.getEmail());
+            createUser.execute(userDto.getName(), userDto.getEmail());
             return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
         } catch (InvalidFieldException e) {
             return new ResponseEntity<>("Test user NOT created", HttpStatus.BAD_REQUEST);
@@ -44,7 +50,7 @@ public class UserController {
     @PostMapping("/user/update")
     public ResponseEntity<String> updateUser(@RequestBody UserDto user) {
         try {
-            userService.updateUser(user.getUserId(), user.getName(), user.getEmail());
+            updateUser.execute(user.getUserId(), user.getName(), user.getEmail());
             return new ResponseEntity<>("Test user updated", HttpStatus.OK);
         } catch (InvalidFieldException e) {
             return new ResponseEntity<>("Test user NOT updated", HttpStatus.BAD_REQUEST);

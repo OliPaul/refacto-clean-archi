@@ -1,7 +1,7 @@
 package com.cantet.refacto.user.infrastructure.dao;
 
 import com.cantet.refacto.user.domain.model.User;
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
+import com.cantet.refacto.user.domain.model.InvalidFieldException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

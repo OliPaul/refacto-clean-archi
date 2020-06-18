@@ -1,4 +1,4 @@
-package com.cantet.refacto.user.domain.service;
+package com.cantet.refacto.user.domain.model;
 
 public class InvalidFieldException extends Throwable {
 }

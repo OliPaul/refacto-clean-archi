@@ -1,6 +1,5 @@
 package com.cantet.refacto.user.domain.model;
 
-import com.cantet.refacto.user.domain.service.InvalidFieldException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
