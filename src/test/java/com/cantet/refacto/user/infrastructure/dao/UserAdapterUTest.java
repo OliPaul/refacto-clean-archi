@@ -16,13 +16,13 @@ class UserAdapterUTest {
         final Date created = new Date();
         final Date lastConnection = new Date();
         User user = new User("1232132", "toto", "toto@test.com", created, lastConnection);
-        UserModel expectedUserModel = new UserModel("1232132", "toto", "toto@test.com", created, lastConnection);
+        MongoUser expectedMongoUser = new MongoUser("1232132", "toto", "toto@test.com", created, lastConnection);
 
         // when
-        UserModel userModel = UserAdapter.userToModel(user);
+        MongoUser mongoUser = UserAdapter.userToModel(user);
 
         // then
-        assertThat(userModel).isEqualToComparingFieldByField(expectedUserModel);
+        assertThat(mongoUser).isEqualToComparingFieldByField(expectedMongoUser);
     }
 
     @Test
@@ -30,11 +30,11 @@ class UserAdapterUTest {
         // given
         final Date created = new Date();
         final Date lastConnection = new Date();
-        UserModel userModel = new UserModel("1232132", "toto", "toto@test.com", created, lastConnection);
+        MongoUser mongoUser = new MongoUser("1232132", "toto", "toto@test.com", created, lastConnection);
         User expectedUser = new User("1232132", "toto", "toto@test.com", created, lastConnection);
 
         // when
-        User user = UserAdapter.modelToUser(userModel);
+        User user = UserAdapter.modelToUser(mongoUser);
 
         // then
         assertThat(user).isEqualToComparingFieldByField(expectedUser);

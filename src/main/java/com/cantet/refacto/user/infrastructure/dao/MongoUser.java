@@ -10,7 +10,7 @@ import java.util.Date;
 @Document(collection = "User")
 @Getter
 @Setter
-public class UserModel {
+public class MongoUser {
 
     @Id
     private String userId;
@@ -19,7 +19,7 @@ public class UserModel {
     private Date created;
     private Date lastConnection;
 
-    public UserModel(String userId, String name, String email, Date created, Date lastConnection){
+    public MongoUser(String userId, String name, String email, Date created, Date lastConnection){
         this.userId = userId;
         this.name = name;
         this.email = email;

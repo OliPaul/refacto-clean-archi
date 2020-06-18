@@ -24,23 +24,23 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UserDAOTest {
+public class MongoUserRepositoryTest {
 
-    private UserDAO userDAO;
+    private MongoUserRepository mongoUserRepository;
 
     @Mock
     private MongoTemplate mongoTemplate;
 
     @BeforeEach
     void setUp() {
-        userDAO = new UserDAO(mongoTemplate);
+        mongoUserRepository = new MongoUserRepository(mongoTemplate);
     }
 
     @Nested
     class AddUserShould {
 
         private User user;
-        private UserModel userModel;
+        private MongoUser mongoUser;
 
         @BeforeEach
         void setUp() throws InvalidFieldException {
@@ -52,15 +52,15 @@ public class UserDAOTest {
 
             user = new User(userId, name, email, created, lastConnection);
 
-            userModel = new UserModel(userId, name, email, created, lastConnection);
+            mongoUser = new MongoUser(userId, name, email, created, lastConnection);
 
-            when(mongoTemplate.save(any())).thenReturn(userModel);
+            when(mongoTemplate.save(any())).thenReturn(mongoUser);
         }
 
         @Test
         public void return_added_user() throws InvalidFieldException {
             // when
-            final User result = userDAO.addUser(user);
+            final User result = mongoUserRepository.addUser(user);
 
             // then
             assertThat(result).isEqualToComparingFieldByField(user);
@@ -69,12 +69,12 @@ public class UserDAOTest {
         @Test
         public void call_mongoSave() throws InvalidFieldException {
             // when
-            userDAO.addUser(user);
+            mongoUserRepository.addUser(user);
 
             // then
-            ArgumentCaptor<UserModel> userModelArgumentCaptor = ArgumentCaptor.forClass(UserModel.class);
+            ArgumentCaptor<MongoUser> userModelArgumentCaptor = ArgumentCaptor.forClass(MongoUser.class);
             verify(mongoTemplate).save(userModelArgumentCaptor.capture());
-            assertThat(userModelArgumentCaptor.getValue()).isEqualToComparingFieldByField(userModel);
+            assertThat(userModelArgumentCaptor.getValue()).isEqualToComparingFieldByField(mongoUser);
         }
     }
 
@@ -83,15 +83,15 @@ public class UserDAOTest {
         // given
         final Date created = new Date();
         final Date lastConnection = new Date();
-        final UserModel user1 = new UserModel("", "Test1", "test1@test.fr", created, lastConnection);
-        final UserModel user2 = new UserModel("", "Test2", "test2@test.fr", created, lastConnection);
-        when(mongoTemplate.findAll(UserModel.class)).thenReturn(asList(user1, user2));
+        final MongoUser user1 = new MongoUser("", "Test1", "test1@test.fr", created, lastConnection);
+        final MongoUser user2 = new MongoUser("", "Test2", "test2@test.fr", created, lastConnection);
+        when(mongoTemplate.findAll(MongoUser.class)).thenReturn(asList(user1, user2));
 
         final User expectedUser1 = new User("", "Test1", "test1@test.fr", created, lastConnection);
         final User expectedUser2 = new User("", "Test2", "test2@test.fr", created, lastConnection);
 
         // when
-        final List<User> users = userDAO.getAllUsers();
+        final List<User> users = mongoUserRepository.getAllUsers();
 
         // then
         assertThat(users).hasSize(2);
@@ -108,11 +108,11 @@ public class UserDAOTest {
         query.addCriteria(Criteria.where("user_id").is(userId));
 
         final User expectedUser = new User(userId, "Test", "test@test.fr", new Date(), new Date());
-        final UserModel userModel = new UserModel(userId, "Test", "test@test.fr", new Date(), new Date());
-        when(mongoTemplate.findOne(query, UserModel.class)).thenReturn(userModel);
+        final MongoUser mongoUser = new MongoUser(userId, "Test", "test@test.fr", new Date(), new Date());
+        when(mongoTemplate.findOne(query, MongoUser.class)).thenReturn(mongoUser);
 
         // when
-        final User user = userDAO.getUserById(userId);
+        final User user = mongoUserRepository.getUserById(userId);
 
         // then
         assertThat(user).isEqualToComparingFieldByField(expectedUser);
@@ -137,9 +137,9 @@ public class UserDAOTest {
         update.set("last_connection", lastConnection);
 
         // when
-        userDAO.updateUser(user);
+        mongoUserRepository.updateUser(user);
 
         // then
-        verify(mongoTemplate).findAndModify(query, update, UserModel.class);
+        verify(mongoTemplate).findAndModify(query, update, MongoUser.class);
     }
 }

@@ -13,28 +13,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class UserDAO implements UserRepository {
+public class MongoUserRepository implements UserRepository {
 
     private final MongoTemplate mongoTemplate;
 
-    public UserDAO(MongoTemplate mongoTemplate){
+    public MongoUserRepository(MongoTemplate mongoTemplate){
         this.mongoTemplate = mongoTemplate;
     }
 
     @Override
     public User addUser(User user) throws InvalidFieldException {
-        final UserModel userModel = UserAdapter.userToModel(user);
-        final UserModel savedUser = mongoTemplate.save(userModel);
+        final MongoUser mongoUser = UserAdapter.userToModel(user);
+        final MongoUser savedUser = mongoTemplate.save(mongoUser);
         return UserAdapter.modelToUser(savedUser);
     }
 
     @Override
     public List<User> getAllUsers() throws InvalidFieldException {
-        final List<UserModel> userModels = mongoTemplate.findAll(UserModel.class);
+        final List<MongoUser> mongoUsers = mongoTemplate.findAll(MongoUser.class);
         final List<User> users = new ArrayList<>();
-        for (UserModel userModel: userModels
+        for (MongoUser mongoUser : mongoUsers
              ) {
-            final User user = UserAdapter.modelToUser(userModel);
+            final User user = UserAdapter.modelToUser(mongoUser);
             users.add(user);
         }
 
@@ -45,8 +45,8 @@ public class UserDAO implements UserRepository {
     public User getUserById(String userId) throws InvalidFieldException {
         Query query = new Query();
         query.addCriteria(Criteria.where("user_id").is(userId));
-        final UserModel userModel = mongoTemplate.findOne(query, UserModel.class);
-        return UserAdapter.modelToUser(userModel);
+        final MongoUser mongoUser = mongoTemplate.findOne(query, MongoUser.class);
+        return UserAdapter.modelToUser(mongoUser);
     }
 
     @Override
@@ -57,6 +57,6 @@ public class UserDAO implements UserRepository {
         update.set("name", user.getName());
         update.set("email", user.getEmail());
         update.set("last_connection", user.getLastConnection());
-        mongoTemplate.findAndModify(query, update, UserModel.class);
+        mongoTemplate.findAndModify(query, update, MongoUser.class);
     }
 }
