@@ -26,4 +26,14 @@ public class UserController {
         userDAO.addUser(user);
         return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
     }
+
+    @PostMapping("/user/update")
+    public ResponseEntity<String> updateUser(@RequestBody UserModel user) {
+        final UserModel userModel = userDAO.getUserById(user.getUserId());
+        userModel.setName(user.getName());
+        userModel.setEmail(user.getEmail());
+
+        userDAO.updateUser(userModel);
+        return new ResponseEntity<>("Test user updated", HttpStatus.OK);
+    }
 }
