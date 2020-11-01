@@ -13,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Date;
+import java.util.List;
 
+import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,6 +31,23 @@ class UserControllerUTest {
     @BeforeEach
     void setUp() {
         userController = new UserController(userDAO);
+    }
+
+    @Nested
+    class GetUsesShould {
+        @Test
+        void return_ok_and_existing_users() {
+            // given
+            final UserModel userModel = new UserModel(null, "toto", "toto@test.com", null, null);
+            when(userDAO.getAllUsers()).thenReturn(singletonList(userModel));
+
+            // when
+            final ResponseEntity<List<UserModel>> result = userController.getAllUsers();
+
+            // then
+            assertThat(result.getBody()).containsOnly(userModel);
+            assertThat(result.getStatusCode()).isEqualTo(HttpStatus.OK);
+        }
     }
 
     @Nested

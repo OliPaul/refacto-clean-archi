@@ -4,11 +4,13 @@ import com.cantet.refacto.dao.UserDAO;
 import com.cantet.refacto.model.UserModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -17,6 +19,12 @@ public class UserController {
 
     public UserController(UserDAO userDAO) {
         this.userDAO = userDAO;
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<UserModel>> getAllUsers() {
+        final List<UserModel> allUsers = userDAO.getAllUsers();
+        return new ResponseEntity<>(allUsers, HttpStatus.OK);
     }
 
     @PostMapping("/user/add")
