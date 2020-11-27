@@ -1,47 +1,33 @@
 package com.cantet.refacto.controller;
 
-import com.cantet.refacto.dao.UserDAO;
+import com.cantet.refacto.dao.MovementDAO;
+import com.cantet.refacto.model.MovementModel;
 import com.cantet.refacto.model.UserModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
 public class UserController {
 
-    private final UserDAO userDAO;
+    private final MovementDAO movementDAO;
 
-    public UserController(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserController(MovementDAO movementDAO) {
+        this.movementDAO = movementDAO;
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<List<UserModel>> getAllUsers() {
-        final List<UserModel> allUsers = userDAO.getAllUsers();
-        return new ResponseEntity<>(allUsers, HttpStatus.OK);
-    }
+    @GetMapping("/user/{id}/interest")
+    public ResponseEntity<Float> computeInterest(@RequestBody UserModel userModel) {
+        final List<MovementModel> allUserMovements = movementDAO.getCredits(userModel);
 
-    @PostMapping("/user/add")
-    public ResponseEntity<String> addUser(@RequestBody UserModel userModel) {
-        UserModel user = new UserModel(null, userModel.getName(), userModel.getEmail(), new Date(), new Date());
+        final Float interests = allUserMovements.stream()
+                .map(movementModel -> movementModel.getCredit() * 1.2f)
+                .reduce(0f, Float::sum);
 
-        userDAO.addUser(user);
-        return new ResponseEntity<>("Test user created", HttpStatus.CREATED);
-    }
-
-    @PostMapping("/user/update")
-    public ResponseEntity<String> updateUser(@RequestBody UserModel user) {
-        final UserModel userModel = userDAO.getUserById(user.getUserId());
-        userModel.setName(user.getName());
-        userModel.setEmail(user.getEmail());
-
-        userDAO.updateUser(userModel);
-        return new ResponseEntity<>("Test user updated", HttpStatus.OK);
+        return new ResponseEntity<>(interests, HttpStatus.OK);
     }
 }

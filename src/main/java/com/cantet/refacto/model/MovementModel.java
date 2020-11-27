@@ -5,15 +5,19 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "User")
+@Document(collection = "Movement")
 @Getter
 @Setter
-public class UserModel {
+public class MovementModel {
 
     @Id
     private Integer id;
+    private Integer userId;
+    private Float credit;
 
-    public UserModel(int id){
+    public MovementModel(int id, Integer userId, Float credit){
         this.id = id;
+        this.userId = userId;
+        this.credit = credit;
     }
 }
