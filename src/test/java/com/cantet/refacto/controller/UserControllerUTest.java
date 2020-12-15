@@ -1,7 +1,7 @@
 package com.cantet.refacto.controller;
 
 import com.cantet.refacto.model.UserModel;
-import com.cantet.refacto.service.UserService;
+import com.cantet.refacto.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -20,11 +20,11 @@ class UserControllerUTest {
     private UserController userController;
 
     @Mock
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
     @BeforeEach
     void setUp() {
-        userController = new UserController(userService);
+        userController = new UserController(userServiceImpl);
     }
 
     @Nested
@@ -36,7 +36,7 @@ class UserControllerUTest {
             final Integer userId = 42;
             final UserModel userModel = new UserModel(userId);
             final float expectedInterest = 3.6f;
-            when(userService.computeInterest(userModel)).thenReturn(expectedInterest);
+            when(userServiceImpl.computeInterest(userModel)).thenReturn(expectedInterest);
 
             // when
             final ResponseEntity<Float> result = userController.computeInterest(userModel);
