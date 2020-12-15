@@ -1,7 +1,7 @@
 package com.cantet.refacto.user.use_case;
 
-import com.cantet.refacto.user.infrastructure.model.UserModel;
+import com.cantet.refacto.user.domain.service.User;
 
 public interface ComputeInterests {
-    Float execute(UserModel userModel);
+    Float execute(User user);
 }

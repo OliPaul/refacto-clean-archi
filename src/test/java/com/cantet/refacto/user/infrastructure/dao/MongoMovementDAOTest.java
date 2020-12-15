@@ -1,5 +1,7 @@
 package com.cantet.refacto.user.infrastructure.dao;
 
+import com.cantet.refacto.user.domain.service.Movement;
+import com.cantet.refacto.user.domain.service.User;
 import com.cantet.refacto.user.infrastructure.dao.impl.MongoMovementDAO;
 import com.cantet.refacto.user.infrastructure.model.MovementModel;
 import com.cantet.refacto.user.infrastructure.model.UserModel;
@@ -41,14 +43,17 @@ public class MongoMovementDAOTest {
                 new MovementModel(3, 999, 2f));
         when(mongoTemplate.findAll(MovementModel.class)).thenReturn(movementModels);
 
-        UserModel userModel = new UserModel(userId);
+        User user = new User(userId);
 
         // when
-        final List<MovementModel> movements = mongoMovementDAOImpl.getCredits(userModel);
+        final List<Movement> movements = mongoMovementDAOImpl.getCredits(user);
 
         // then
         assertThat(movements).hasSize(2);
-        assertThat(movements).containsExactly(movementModel1, movementModel2);
+
+        final Movement movement1 = new Movement(1f);
+        final Movement movement2 = new Movement(2f);
+        assertThat(movements).usingRecursiveFieldByFieldElementComparator().containsExactly(movement1, movement2);
 
     }
 }

@@ -2,13 +2,11 @@ package com.cantet.refacto.user.use_case;
 
 import com.cantet.refacto.user.domain.service.InterestHelper;
 import com.cantet.refacto.user.domain.service.Movement;
-import com.cantet.refacto.user.infrastructure.dao.MovementDAO;
-import com.cantet.refacto.user.infrastructure.model.MovementModel;
-import com.cantet.refacto.user.infrastructure.model.UserModel;
+import com.cantet.refacto.user.domain.service.MovementDAO;
+import com.cantet.refacto.user.domain.service.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ComputeInterestsImpl implements ComputeInterests {
@@ -20,14 +18,9 @@ public class ComputeInterestsImpl implements ComputeInterests {
     }
 
     @Override
-    public Float execute(UserModel userModel) {
-        final List<MovementModel> allUserMovements = movementDAO.getCredits(userModel);
+    public Float execute(User user) {
+        final List<Movement> allUserMovements = movementDAO.getCredits(user);
 
-        final List<Movement> movements = allUserMovements
-                .stream()
-                .map(movementModel -> new Movement(movementModel.getCredit()))
-                .collect(Collectors.toList());
-
-        return InterestHelper.computeInterest(movements);
+        return InterestHelper.computeInterest(allUserMovements);
     }
 }

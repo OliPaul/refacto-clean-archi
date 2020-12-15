@@ -1,8 +1,8 @@
 package com.cantet.refacto.user.infrastructure.controller;
 
-import com.cantet.refacto.user.infrastructure.dao.MovementDAO;
-import com.cantet.refacto.user.infrastructure.model.MovementModel;
-import com.cantet.refacto.user.infrastructure.model.UserModel;
+import com.cantet.refacto.user.domain.service.Movement;
+import com.cantet.refacto.user.domain.service.MovementDAO;
+import com.cantet.refacto.user.domain.service.User;
 import com.cantet.refacto.user.use_case.ComputeInterestsImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -15,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -22,15 +24,15 @@ class UserControllerUTest {
 
     private UserController userController;
 
-    private ComputeInterestsImpl userServiceImpl;
+    private ComputeInterestsImpl computeInterests;
 
     @Mock
     private MovementDAO movementDAO;
 
     @BeforeEach
     void setUp() {
-        userServiceImpl = new ComputeInterestsImpl(movementDAO);
-        userController = new UserController(userServiceImpl);
+        computeInterests = new ComputeInterestsImpl(movementDAO);
+        userController = new UserController(computeInterests);
     }
 
     @Nested
@@ -40,13 +42,15 @@ class UserControllerUTest {
         void return_ok_and_computed_interests() {
             // given
             final Integer userId = 42;
-            final UserModel userModel = new UserModel(userId);
-            final MovementModel movementModel1 = new MovementModel(1, userId, 1f);
-            final MovementModel movementModel2 = new MovementModel(2, userId, 2f);
-            when(movementDAO.getCredits(userModel)).thenReturn(asList(movementModel1, movementModel2));
+            final Movement movement1 = new Movement(1f);
+            final Movement movement2 = new Movement(2f);
+            final User user = new User(userId);
+            when(movementDAO.getCredits(user)).thenReturn(asList(movement1, movement2));
+
+            final UserDto userDto = new UserDto(userId);
 
             // when
-            final ResponseEntity<Float> result = userController.computeInterest(userModel);
+            final ResponseEntity<Float> result = userController.computeInterest(userDto);
 
             // then
             assertThat(result.getBody()).isEqualTo(3.6000001f);
