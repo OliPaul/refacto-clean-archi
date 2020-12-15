@@ -29,21 +29,25 @@ public class MovementDAOTest {
     }
 
     @Test
-    public void getAllMovements_should_return_all_users() {
+    public void getCredits_should_return_all_movement() {
         // given
         final Integer userId = 42;
+        final MovementModel movementModel1 = new MovementModel(1, userId, 1f);
+        final MovementModel movementModel2 = new MovementModel(2, userId, 2f);
         final List<MovementModel> movementModels = asList(
-                new MovementModel(1, userId, 1f),
-                new MovementModel(2, userId, 2f),
-                new MovementModel(2, 999, 2f));
+                movementModel1,
+                movementModel2,
+                new MovementModel(3, 999, 2f));
         when(mongoTemplate.findAll(MovementModel.class)).thenReturn(movementModels);
 
         UserModel userModel = new UserModel(userId);
 
         // when
-        final List<MovementModel> users = movementDAO.getCredits(userModel);
+        final List<MovementModel> movements = movementDAO.getCredits(userModel);
 
         // then
-        assertThat(users).hasSize(2);
+        assertThat(movements).hasSize(2);
+        assertThat(movements).containsExactly(movementModel1, movementModel2);
+
     }
 }
