@@ -1,4 +1,4 @@
-package com.cantet.refacto.model;
+package com.cantet.refacto.user.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

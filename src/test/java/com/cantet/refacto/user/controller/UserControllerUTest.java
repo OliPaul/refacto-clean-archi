@@ -1,9 +1,9 @@
-package com.cantet.refacto.controller;
+package com.cantet.refacto.user.controller;
 
-import com.cantet.refacto.dao.MovementDAO;
-import com.cantet.refacto.model.MovementModel;
-import com.cantet.refacto.model.UserModel;
-import com.cantet.refacto.service.impl.UserServiceImpl;
+import com.cantet.refacto.user.dao.MovementDAO;
+import com.cantet.refacto.user.model.MovementModel;
+import com.cantet.refacto.user.model.UserModel;
+import com.cantet.refacto.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

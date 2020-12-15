@@ -1,8 +1,8 @@
-package com.cantet.refacto.dao;
+package com.cantet.refacto.user.dao;
 
-import com.cantet.refacto.dao.impl.MongoMovementDAO;
-import com.cantet.refacto.model.MovementModel;
-import com.cantet.refacto.model.UserModel;
+import com.cantet.refacto.user.dao.impl.MongoMovementDAO;
+import com.cantet.refacto.user.model.MovementModel;
+import com.cantet.refacto.user.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

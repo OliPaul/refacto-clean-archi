@@ -1,9 +1,9 @@
-package com.cantet.refacto.service.impl;
+package com.cantet.refacto.user.service.impl;
 
-import com.cantet.refacto.dao.MovementDAO;
-import com.cantet.refacto.model.MovementModel;
-import com.cantet.refacto.model.UserModel;
-import com.cantet.refacto.service.UserService;
+import com.cantet.refacto.user.dao.MovementDAO;
+import com.cantet.refacto.user.model.MovementModel;
+import com.cantet.refacto.user.model.UserModel;
+import com.cantet.refacto.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
