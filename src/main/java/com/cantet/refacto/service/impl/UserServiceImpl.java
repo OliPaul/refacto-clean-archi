@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private static final float PERCENTAGE_INTEREST = 1.2f;
+
     private final MovementDAO MovementDAO;
 
     public UserServiceImpl(MovementDAO MovementDAO) {
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
         final List<MovementModel> allUserMovements = MovementDAO.getCredits(userModel);
 
         final Float interests = allUserMovements.stream()
-                .map(movementModel -> movementModel.getCredit() * 1.2f)
+                .map(movementModel -> movementModel.getCredit() * PERCENTAGE_INTEREST)
                 .reduce(0f, Float::sum);
 
         return interests;
