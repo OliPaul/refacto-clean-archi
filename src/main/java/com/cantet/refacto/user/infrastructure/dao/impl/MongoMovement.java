@@ -1,17 +1,17 @@
-package com.cantet.refacto.user.infrastructure.model;
+package com.cantet.refacto.user.infrastructure.dao.impl;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Movement")
-public class MovementModel {
+public class MongoMovement {
 
     @Id
     private Integer id;
     private Integer userId;
     private Float credit;
 
-    public MovementModel(int id, Integer userId, Float credit){
+    public MongoMovement(int id, Integer userId, Float credit){
         this.id = id;
         this.userId = userId;
         this.credit = credit;

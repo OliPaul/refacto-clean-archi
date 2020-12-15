@@ -3,8 +3,7 @@ package com.cantet.refacto.user.infrastructure.dao;
 import com.cantet.refacto.user.domain.service.Movement;
 import com.cantet.refacto.user.domain.service.User;
 import com.cantet.refacto.user.infrastructure.dao.impl.MongoMovementDAO;
-import com.cantet.refacto.user.infrastructure.model.MovementModel;
-import com.cantet.refacto.user.infrastructure.model.UserModel;
+import com.cantet.refacto.user.infrastructure.dao.impl.MongoMovement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,13 +34,13 @@ public class MongoMovementDAOTest {
     public void getCredits_should_return_all_movement() {
         // given
         final Integer userId = 42;
-        final MovementModel movementModel1 = new MovementModel(1, userId, 1f);
-        final MovementModel movementModel2 = new MovementModel(2, userId, 2f);
-        final List<MovementModel> movementModels = asList(
-                movementModel1,
-                movementModel2,
-                new MovementModel(3, 999, 2f));
-        when(mongoTemplate.findAll(MovementModel.class)).thenReturn(movementModels);
+        final MongoMovement mongoMovement1 = new MongoMovement(1, userId, 1f);
+        final MongoMovement mongoMovement2 = new MongoMovement(2, userId, 2f);
+        final List<MongoMovement> mongoMovements = asList(
+                mongoMovement1,
+                mongoMovement2,
+                new MongoMovement(3, 999, 2f));
+        when(mongoTemplate.findAll(MongoMovement.class)).thenReturn(mongoMovements);
 
         User user = new User(userId);
 
