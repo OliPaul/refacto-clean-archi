@@ -11,16 +11,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class ComputeInterestsImpl implements ComputeInterests {
 
     private final MovementDAO movementDAO;
 
-    public UserServiceImpl(MovementDAO MovementDAO) {
+    public ComputeInterestsImpl(MovementDAO MovementDAO) {
         this.movementDAO = MovementDAO;
     }
 
     @Override
-    public Float computeInterest(UserModel userModel) {
+    public Float execute(UserModel userModel) {
         final List<MovementModel> allUserMovements = movementDAO.getCredits(userModel);
 
         final List<Movement> movements = allUserMovements

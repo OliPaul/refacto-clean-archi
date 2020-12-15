@@ -3,7 +3,7 @@ package com.cantet.refacto.user.infrastructure.controller;
 import com.cantet.refacto.user.infrastructure.dao.MovementDAO;
 import com.cantet.refacto.user.infrastructure.model.MovementModel;
 import com.cantet.refacto.user.infrastructure.model.UserModel;
-import com.cantet.refacto.user.use_case.UserServiceImpl;
+import com.cantet.refacto.user.use_case.ComputeInterestsImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -22,14 +22,14 @@ class UserControllerUTest {
 
     private UserController userController;
 
-    private UserServiceImpl userServiceImpl;
+    private ComputeInterestsImpl userServiceImpl;
 
     @Mock
     private MovementDAO movementDAO;
 
     @BeforeEach
     void setUp() {
-        userServiceImpl = new UserServiceImpl(movementDAO);
+        userServiceImpl = new ComputeInterestsImpl(movementDAO);
         userController = new UserController(userServiceImpl);
     }
 
