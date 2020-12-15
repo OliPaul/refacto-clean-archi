@@ -1,8 +1,8 @@
-package com.cantet.refacto.user.dao.impl;
+package com.cantet.refacto.user.infrastructure.dao.impl;
 
-import com.cantet.refacto.user.dao.MovementDAO;
-import com.cantet.refacto.user.model.MovementModel;
-import com.cantet.refacto.user.model.UserModel;
+import com.cantet.refacto.user.infrastructure.dao.MovementDAO;
+import com.cantet.refacto.user.infrastructure.model.MovementModel;
+import com.cantet.refacto.user.infrastructure.model.UserModel;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 

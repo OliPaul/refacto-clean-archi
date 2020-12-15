@@ -1,7 +1,7 @@
-package com.cantet.refacto.user.controller;
+package com.cantet.refacto.user.infrastructure.controller;
 
-import com.cantet.refacto.user.model.UserModel;
-import com.cantet.refacto.user.service.UserService;
+import com.cantet.refacto.user.infrastructure.model.UserModel;
+import com.cantet.refacto.user.use_case.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
