@@ -10,14 +10,14 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final MovementDAO movementDAO;
+    private final MovementDAO MovementDAO;
 
-    public UserService(MovementDAO movementDAO) {
-        this.movementDAO = movementDAO;
+    public UserService(MovementDAO MovementDAO) {
+        this.MovementDAO = MovementDAO;
     }
 
     public Float computeInterest(UserModel userModel) {
-        final List<MovementModel> allUserMovements = movementDAO.getCredits(userModel);
+        final List<MovementModel> allUserMovements = MovementDAO.getCredits(userModel);
 
         final Float interests = allUserMovements.stream()
                 .map(movementModel -> movementModel.getCredit() * 1.2f)

@@ -1,5 +1,6 @@
 package com.cantet.refacto.dao;
 
+import com.cantet.refacto.dao.impl.MongoMovementDAO;
 import com.cantet.refacto.model.MovementModel;
 import com.cantet.refacto.model.UserModel;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,16 +17,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class MovementDAOTest {
+public class MongoMovementDAOTest {
 
-    private MovementDAO movementDAO;
+    private MongoMovementDAO mongoMovementDAOImpl;
 
     @Mock
     private MongoTemplate mongoTemplate;
 
     @BeforeEach
     void setUp() {
-        movementDAO = new MovementDAO(mongoTemplate);
+        mongoMovementDAOImpl = new MongoMovementDAO(mongoTemplate);
     }
 
     @Test
@@ -43,7 +44,7 @@ public class MovementDAOTest {
         UserModel userModel = new UserModel(userId);
 
         // when
-        final List<MovementModel> movements = movementDAO.getCredits(userModel);
+        final List<MovementModel> movements = mongoMovementDAOImpl.getCredits(userModel);
 
         // then
         assertThat(movements).hasSize(2);
