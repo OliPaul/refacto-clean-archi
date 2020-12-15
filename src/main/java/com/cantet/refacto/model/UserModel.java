@@ -1,13 +1,9 @@
 package com.cantet.refacto.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "User")
-@Getter
-@Setter
 public class UserModel {
 
     @Id
@@ -15,5 +11,9 @@ public class UserModel {
 
     public UserModel(int id){
         this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

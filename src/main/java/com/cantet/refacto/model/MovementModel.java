@@ -1,13 +1,9 @@
 package com.cantet.refacto.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "Movement")
-@Getter
-@Setter
 public class MovementModel {
 
     @Id
@@ -19,5 +15,17 @@ public class MovementModel {
         this.id = id;
         this.userId = userId;
         this.credit = credit;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public Float getCredit() {
+        return credit;
     }
 }
