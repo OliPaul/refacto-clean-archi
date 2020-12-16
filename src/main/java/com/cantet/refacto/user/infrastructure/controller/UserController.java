@@ -1,6 +1,6 @@
 package com.cantet.refacto.user.infrastructure.controller;
 
-import com.cantet.refacto.user.domain.service.User;
+import com.cantet.refacto.user.domain.User;
 import com.cantet.refacto.user.use_case.ComputeInterests;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

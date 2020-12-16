@@ -1,9 +1,9 @@
 package com.cantet.refacto.user.use_case;
 
-import com.cantet.refacto.user.domain.service.InterestHelper;
-import com.cantet.refacto.user.domain.service.Movement;
-import com.cantet.refacto.user.domain.service.MovementDAO;
-import com.cantet.refacto.user.domain.service.User;
+import com.cantet.refacto.user.domain.InterestHelper;
+import com.cantet.refacto.user.domain.Movement;
+import com.cantet.refacto.user.domain.MovementDAO;
+import com.cantet.refacto.user.domain.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

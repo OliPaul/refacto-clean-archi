@@ -1,4 +1,4 @@
-package com.cantet.refacto.user.domain.service;
+package com.cantet.refacto.user.domain;
 
 public class Movement {
     private final Float credit;

@@ -1,4 +1,4 @@
-package com.cantet.refacto.user.infrastructure.dao.impl;
+package com.cantet.refacto.user.infrastructure.dao;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

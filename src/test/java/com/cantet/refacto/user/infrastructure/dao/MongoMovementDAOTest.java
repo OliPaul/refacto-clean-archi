@@ -1,9 +1,7 @@
 package com.cantet.refacto.user.infrastructure.dao;
 
-import com.cantet.refacto.user.domain.service.Movement;
-import com.cantet.refacto.user.domain.service.User;
-import com.cantet.refacto.user.infrastructure.dao.impl.MongoMovementDAO;
-import com.cantet.refacto.user.infrastructure.dao.impl.MongoMovement;
+import com.cantet.refacto.user.domain.Movement;
+import com.cantet.refacto.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
