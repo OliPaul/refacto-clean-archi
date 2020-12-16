@@ -1,6 +1,6 @@
 package com.cantet.refacto.user.use_case;
 
-import com.cantet.refacto.user.domain.InterestHelper;
+import com.cantet.refacto.user.domain.Interests;
 import com.cantet.refacto.user.domain.Movement;
 import com.cantet.refacto.user.domain.MovementDAO;
 import com.cantet.refacto.user.domain.User;
@@ -21,6 +21,6 @@ public class ComputeInterestsImpl implements ComputeInterests {
     public Float execute(User user) {
         final List<Movement> allUserMovements = movementDAO.getCredits(user);
 
-        return InterestHelper.computeInterest(allUserMovements);
+        return new Interests(allUserMovements).compute();
     }
 }
